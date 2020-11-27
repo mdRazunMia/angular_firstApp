@@ -1,0 +1,13 @@
+mat-card {
+    width: 100%;
+    margin: auto;
+}
+
+mat-form-feild,
+textarea {
+    width: 100%;
+}
+
+button {
+    margin-left: 10px;
+}

@@ -1,6 +1,14 @@
 <!-- <textarea rows="6" [value]="userPost" #textAreaInput></textarea> Name:<input type="text" #name /> -->
-<textarea [(ngModel)]="newPost"></textarea>
+<mat-card>
+    <mat-form-field>
+        <textarea matInput [(ngModel)]="newPost" placeholder="Leave a comment"></textarea>
+    </mat-form-field>
+    <br />
+    <button mat-raised-button color="primary" (click)="onAddPost()">
+    Save Post
+  </button>
+</mat-card>
 <hr />
-<button (click)="onAddPost()">Save Post</button>
+
 <!-- <button (click)="onAddPost(textAreaInput)"></button> -->
-<p>{{ userPost }}</p>
+<!-- <p>{{ userPost }}</p> -->
