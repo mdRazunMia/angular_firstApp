@@ -1,0 +1,6 @@
+<!-- <textarea rows="6" [value]="userPost" #textAreaInput></textarea> Name:<input type="text" #name /> -->
+<textarea [(ngModel)]="newPost"></textarea>
+<hr />
+<button (click)="onAddPost()">Save Post</button>
+<!-- <button (click)="onAddPost(textAreaInput)"></button> -->
+<p>{{ userPost }}</p>
