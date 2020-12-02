@@ -35,14 +35,14 @@ app.use((req, res, next) => {
 
 
 // mongodb password: Gi0HhPiTCJHbfHEb
-
+// console.log('it\'s comming from before app');
 app.post("/api/posts", (req, res, next) => {
     // const post = req.body;
     const post = new Post({
         title: req.body.title,
         content: req.body.content
     });
-    // console.log(post);
+    console.log(post);
     post.save()
     res.status(201).json({
         message: 'Post added successfully'
