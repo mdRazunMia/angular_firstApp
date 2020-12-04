@@ -12,17 +12,24 @@
     <button mat-raised-button color="primary" (click)="onAddPost()">
     Save Post
   </button> -->
-    <form (submit)="onAddPost(postForm)" #postForm="ngForm" *ngIf="!isloading">
+    <form [formGroup]="form" (submit)="onAddPost()" *ngIf="!isloading">
         <mat-form-field>
-            <input matInput type="text" ngModel name="title" #title="ngModel" placeholder="Enter Title" required />
+            <input matInput type="text" formControlName="title" placeholder="Enter Title" />
 
             <!-- <mat-error *ngIf="postForm.getControl('title').invalid">{{ }}</mat-error> -->
-            <mat-error *ngIf="title.invalid">Please enter a post title</mat-error>
+            <mat-error *ngIf="form.get('title').invalid">Please enter a post title</mat-error>
         </mat-form-field>
         <br />
+        <div>
+            <button mat-stroked-button type="button" (click)="filePicker.click()">
+        pick Image
+      </button>
+            <input type="file" #filePicker />
+        </div>
+        <br />
         <mat-form-field>
-            <textarea matInput ngModel name="content" #content="ngModel" placeholder="Leave a comment" required></textarea>
-            <mat-error *ngIf="content.invalid">Please enter the content of the post</mat-error>
+            <textarea matInput placeholder="Leave a comment" formControlName="content"></textarea>
+            <mat-error *ngIf="form.get('content').invalid">Please enter the content of the post</mat-error>
         </mat-form-field>
         <br />
         <!-- <button mat-raised-button color="primary" (click)="onAddPost()"> -->

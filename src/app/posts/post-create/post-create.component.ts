@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { EventEmitter, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
+// import { FormGroup, NgForm } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 // import { Post } from '../post.model'
 import { PostService } from '../posts.service';
 import  { Post } from '../post.model';
@@ -20,6 +21,7 @@ export class PostCreateComponent implements OnInit {
   private postId: any;
   private post: any;
   isloading = false;
+  form: any;
 
   // @Output() postCreated: EventEmitter<any> = new EventEmitter<Post>();
 
@@ -27,21 +29,31 @@ export class PostCreateComponent implements OnInit {
   constructor(public postService: PostService, public route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(
-      (paramMap: ParamMap) =>{
-        if(paramMap.has('postId')){
-          this.mode = 'edit';
-          this.postId = paramMap.get('postId');
-         // this.post = this.postService.getPost(this.postId);
-        }else{
-          this.mode = 'create';
-          this.postId = null;
-        }
-      }
-    );
+    // this.route.paramMap.subscribe(
+    //   (paramMap: ParamMap) =>{
+    //     if(paramMap.has('postId')){
+    //       this.mode = 'edit';
+    //       this.postId = paramMap.get('postId');
+    //      // this.post = this.postService.getPost(this.postId);
+    //     }else{
+    //       this.mode = 'create';
+    //       this.postId = null;
+    //     }
+    //   }
+    // );
+
+    this.form = new FormGroup({
+      title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
+      content: new FormControl(null, { validators: [Validators.required]})
+    });
+
+    this.form.setValue({
+      'title': this.post.title,
+      'content': this.post.content
+    });
   }
 
-  onAddPost(form: NgForm){
+  onAddPost(){
     // this.userPost = textAreaInput.value;
     // this.name = name.value;
     // this.userPost = this.newPost;
@@ -49,17 +61,17 @@ export class PostCreateComponent implements OnInit {
     //   title: this.enteredTitle,
     //   content: this.enteredContent
     // };
-    if(form.invalid){
+    if(this.form.invalid){
       return;
     }
     this.isloading = true;
     const post: Post = {
       _id: '',
-      title: form.value.title,
-      content: form.value.content
+      title: this.form.value.title,
+      content: this.form.value.content
     };
     // this.postCreated.emit(post);
-    this.postService.addPost(form.value.title, form.value.content);
-    form.resetForm();
+    this.postService.addPost(this.form.value.title, this.form.value.content);
+    this.form.reset();
   }
 }
