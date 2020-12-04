@@ -1,5 +1,6 @@
 <!-- <textarea rows="6" [value]="userPost" #textAreaInput></textarea> Name:<input type="text" #name /> -->
 <mat-card>
+    <mat-spinner *ngIf="isloading"></mat-spinner>
     <!-- <mat-form-field>
         <input matInput type="text" [(ngModel)]="enteredTitle" placeholder="Enter Title" />
     </mat-form-field>
@@ -11,7 +12,7 @@
     <button mat-raised-button color="primary" (click)="onAddPost()">
     Save Post
   </button> -->
-    <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+    <form (submit)="onAddPost(postForm)" #postForm="ngForm" *ngIf="!isloading">
         <mat-form-field>
             <input matInput type="text" ngModel name="title" #title="ngModel" placeholder="Enter Title" required />
 

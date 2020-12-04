@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const postRoutes = require("./routes/posts") // for routing the pages of post
 const Post = require('./models/post');
 const mongoose = require('mongoose');
+
 
 const app = express();
 
@@ -33,41 +35,8 @@ app.use((req, res, next) => {
     next();
 });
 
-
+app.use("/api/posts", postRoutes);
 // mongodb password: Gi0HhPiTCJHbfHEb
-// console.log('it\'s comming from before app');
-app.post("/api/posts", (req, res, next) => {
-    // const post = req.body;
-    const post = new Post({
-        title: req.body.title,
-        content: req.body.content
-    });
-    console.log(post);
-    post.save()
-    res.status(201).json({
-        message: 'Post added successfully'
-    });
-});
 
-app.get("/api/posts", (req, res, next) => {
-    // res.send('This is the first middleware.');
-    // console.log('First middleware');
-    // next();
-    const posts = [{
-            id: "fadf12421l",
-            title: "First server-side post",
-            content: "This is coming from the server"
-        },
-        {
-            id: "ksajflaj132",
-            title: "Second server-side post",
-            content: "This is coming from the server"
-        }
-    ];
-    res.status(200).json({
-        message: 'post fetched successfully',
-        posts: posts
-    });
-});
 
 module.exports = app;
