@@ -6,7 +6,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PostService } from '../posts.service';
 import  { Post } from '../post.model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ThisReceiver } from '@angular/compiler';
+// import { ThisReceiver } from '@angular/compiler';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -17,6 +18,7 @@ import { ThisReceiver } from '@angular/compiler';
 export class PostCreateComponent implements OnInit {
   enteredContent = '';
   enteredTitle = '';
+  imagePreview: any;
   private mode = 'create';
   private postId: any;
   private post: any;
@@ -44,13 +46,30 @@ export class PostCreateComponent implements OnInit {
 
     this.form = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
-      content: new FormControl(null, { validators: [Validators.required]})
+      content: new FormControl(null, { validators: [Validators.required]}),
+      image: new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
     });
 
     this.form.setValue({
       'title': this.post.title,
       'content': this.post.content
     });
+  }
+
+  public onImagePicked(event: Event){
+
+    const file = (event.target as HTMLInputElement).files[0];
+
+    // tells the typeScript that it is a html input element. Just like type conversion
+    this.form.patchValue({image: file});
+    this.form.get('image').updateValueAndValidity();
+    console.log(file);
+    // console.log(this.form);
+    const reader = new FileReader(); //help to read file
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   onAddPost(){
@@ -65,13 +84,13 @@ export class PostCreateComponent implements OnInit {
       return;
     }
     this.isloading = true;
-    const post: Post = {
+    const post: any = {
       _id: '',
       title: this.form.value.title,
       content: this.form.value.content
     };
     // this.postCreated.emit(post);
-    this.postService.addPost(this.form.value.title, this.form.value.content);
+    this.postService.addPost(this.form.value.title, this.form.value.content, this.form.value.image);
     this.form.reset();
   }
 }

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require("path");
 
 const postRoutes = require("./routes/posts") // for routing the pages of post
 const Post = require('./models/post');
@@ -21,6 +22,8 @@ mongoose.connect('mongodb+srv://razun:Gi0HhPiTCJHbfHEb@cluster0.sczn8.mongodb.ne
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use("/images", express.static(path.join("backend/images"))); //any request from /images will give access. by defult there is no access of the file anymore.
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', "*");
